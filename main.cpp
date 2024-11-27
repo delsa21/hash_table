@@ -122,6 +122,7 @@ int main() {
     hashTable.insert(5);
     hashTable.insert(15);
 
+    hashTable.display();
 
 
     hashTable.display();
