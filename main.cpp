@@ -124,7 +124,7 @@ int main() {
 
     hashTable.display();
 
-    std::cout << "Searching 10: " << (hashTable.search(10) ? "Found" : "Not Found") << std::endl;
+    std::cout << "Searching 10: " << (hashTable.search(21) ? "Found" : "Not Found") << std::endl;
     std::cout << "Searching 100: " << (hashTable.search(100) ? "Found" : "Not Found") << std::endl;
 
     hashTable.remove(10);
