@@ -117,6 +117,10 @@ public:
 int main() {
     HashTable hashTable(7, CollisionResolution::LINEAR_PROBING);
 
+    hashTable.insert(10);
+    hashTable.insert(20);
+    hashTable.insert(5);
+    hashTable.insert(15);
 
 
 
