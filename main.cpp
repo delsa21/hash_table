@@ -36,6 +36,83 @@ private:
         size_t newSize = size * 2;
         std::vector<std::optional<Entry>> oldTable = table;
 
+        table.clear();
+        table.resize(newSize, std::nullopt);
+        size = newSize;
+        numElements = 0;
+
+        for (const auto& entry : oldTable) {
+            if (entry.has_value() && entry->isActive) {
+                insert(entry->key);
+            }
+        }
+    }
+
+public:
+    HashTable(size_t size, CollisionResolution method)
+            : size(size), numElements(0), collisionResolutionMethod(method) {
+        table.resize(size, std::nullopt);
+    }
+
+    void insert(int key) {
+        if (numElements >= size * 0.7) {
+            rehash();
+        }
+
+        size_t index = hashFunction(key);
+        size_t i = 0;
+
+        while (table[resolveCollision(index, i)].has_value() &&
+               table[resolveCollision(index, i)]->isActive) {
+            i++;
+        }
+
+        table[resolveCollision(index, i)] = Entry{key, true};
+        numElements++;
+    }
+
+    bool search(int key) const {
+        size_t index = hashFunction(key);
+        size_t i = 0;
+
+        while (table[resolveCollision(index, i)].has_value()) {
+            const auto& entry = table[resolveCollision(index, i)];
+            if (entry->isActive && entry->key == key) {
+                return true;
+            }
+            i++;
+        }
+
+        return false;
+    }
+
+    void remove(int key) {
+        size_t index = hashFunction(key);
+        size_t i = 0;
+
+        while (table[resolveCollision(index, i)].has_value()) {
+            auto& entry = table[resolveCollision(index, i)];
+            if (entry->isActive && entry->key == key) {
+                entry->isActive = false;
+                numElements--;
+                return;
+            }
+            i++;
+        }
+
+        std::cout << "Key not found: " << key << std::endl;
+    }
+
+    void display() const {
+        for (size_t i = 0; i < size; ++i) {
+            if (table[i].has_value() && table[i]->isActive) {
+                std::cout << "[" << i << "]: " << table[i]->key << std::endl;
+            } else {
+                std::cout << "[" << i << "]: " << "EMPTY" << std::endl;
+            }
+        }
+    }
+};
 
 int main() {
 
