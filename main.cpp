@@ -115,6 +115,7 @@ public:
 };
 
 int main() {
+    HashTable hashTable(7, CollisionResolution::LINEAR_PROBING);
 
 
 
